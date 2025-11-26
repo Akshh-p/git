@@ -1,0 +1,88 @@
+QUESTION 4 import csv
+import math
+
+# ---------------------------------------------
+# FUNCTION: Load CSV file
+# ---------------------------------------------
+def load_dataset(filename):
+    dataset = []
+    with open(filename, 'r') as file:
+        data = csv.reader(file)
+        headers = next(data)          # First row = header
+        for row in data:
+            dataset.append(dict(zip(headers, row)))
+    return dataset, headers
+
+# ---------------------------------------------
+# FUNCTION: Calculate Entropy
+# ---------------------------------------------
+def entropy(data, target):
+    value_counts = {}
+    for row in data:
+        label = row[target]
+        value_counts[label] = value_counts.get(label, 0) + 1
+
+    total = len(data)
+    ent = 0
+    for count in value_counts.values():
+        p = count / total
+        ent -= p * math.log(p, 2)
+    return ent
+
+# ---------------------------------------------
+# FUNCTION: Information Gain
+# ---------------------------------------------
+def information_gain(data, attribute, target):
+    total_entropy = entropy(data, target)
+
+    subsets = {}
+    for row in data:
+        val = row[attribute]
+        if val not in subsets:
+            subsets[val] = []
+        subsets[val].append(row)
+
+    weighted_entropy = 0
+    total = len(data)
+    for subset in subsets.values():
+        weighted_entropy += (len(subset) / total) * entropy(subset, target)
+
+    return total_entropy - weighted_entropy
+
+# ---------------------------------------------
+# FUNCTION: Find Best Attribute
+# ---------------------------------------------
+def find_best_attribute(data, headers, target):
+    # Exclude ID column (normal and BOM version)
+    attributes = [h for h in headers if h not in (target, "Id", "ï»¿Id")]
+
+    ig_values = {}
+
+    for attribute in attributes:
+        ig = information_gain(data, attribute, target)
+        ig_values[attribute] = ig
+        print(f"Information Gain({attribute}) = {ig:.4f}")
+
+    best_attribute = max(ig_values, key=ig_values.get)
+    return best_attribute
+
+
+# ---------------------------------------------
+# MAIN PROGRAM
+# ---------------------------------------------
+if _name_ == "_main_":
+    filename = "C:/Users/hp/Downloads/Datasets/Datasets/Lipstick.csv"
+
+    data, headers = load_dataset(filename)
+
+    target = "Buys"
+
+    print("\n=== ENTROPY OF ENTIRE DATASET ===")
+    print("Entropy =", entropy(data, target))
+
+    print("\n=== INFORMATION GAIN OF EACH ATTRIBUTE ===")
+    root = find_best_attribute(data, headers, target)
+
+    print("\n=======================================")
+    print("ROOT NODE OF DECISION TREE:", root)
+    print("=======================================")
