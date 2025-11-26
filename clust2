@@ -1,0 +1,77 @@
+QUESTION 10 import math
+
+# -------------------------------------------------------------
+# FUNCTION TO COMPUTE EUCLIDEAN DISTANCE
+# -------------------------------------------------------------
+def dist(a, b):
+    return math.sqrt((a[0] - b[0])*2 + (a[1] - b[1])*2)
+
+# -------------------------------------------------------------
+# GIVEN POINTS
+# -------------------------------------------------------------
+P = {
+    "P1": [2, 10],
+    "P2": [2, 5],
+    "P3": [8, 4],
+    "P4": [5, 8],
+    "P5": [7, 5],
+    "P6": [6, 4],
+    "P7": [1, 2],
+    "P8": [4, 9]
+}
+
+# -------------------------------------------------------------
+# INITIAL CENTROIDS
+# -------------------------------------------------------------
+m1 = P["P1"]   # Cluster C1
+m2 = P["P4"]   # Cluster C2
+m3 = P["P7"]   # Cluster C3
+
+# -------------------------------------------------------------
+# ASSIGN POINTS TO CLUSTERS
+# -------------------------------------------------------------
+C1, C2, C3 = [], [], []
+
+for key, point in P.items():
+    d1 = dist(point, m1)
+    d2 = dist(point, m2)
+    d3 = dist(point, m3)
+
+    # Pick smallest distance
+    dmin = min(d1, d2, d3)
+
+    if dmin == d1:
+        C1.append(key)
+    elif dmin == d2:
+        C2.append(key)
+    else:
+        C3.append(key)
+
+# -------------------------------------------------------------
+# FUNCTION TO COMPUTE NEW CENTROID
+# -------------------------------------------------------------
+def centroid(cluster_points):
+    x = sum(P[p][0] for p in cluster_points) / len(cluster_points)
+    y = sum(P[p][1] for p in cluster_points) / len(cluster_points)
+    return [x, y]
+
+# -------------------------------------------------------------
+# UPDATED CENTROIDS
+# -------------------------------------------------------------
+new_m1 = centroid(C1)
+new_m2 = centroid(C2)
+new_m3 = centroid(C3)
+
+# -------------------------------------------------------------
+# OUTPUT
+# -------------------------------------------------------------
+print("Cluster C1:", C1)
+print("Cluster C2:", C2)
+print("Cluster C3:", C3)
+
+print("\nP6 belongs to:", "C1" if "P6" in C1 else ("C2" if "P6" in C2 else "C3"))
+print("Population of cluster around m3 (C3):", len(C3))
+
+print("\nUpdated m1:", new_m1)
+print("Updated m2:", new_m2)
+print("Updated m3:", new_m3)
