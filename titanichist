@@ -1,0 +1,13 @@
+QUESTION 16 import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the inbuilt Titanic dataset
+df = sns.load_dataset("titanic")
+
+# Plot histogram for 'fare'
+plt.figure(figsize=(8,5))
+plt.hist(df['fare'].dropna())  # remove missing values
+plt.title("Distribution of Titanic Ticket Fare")
+plt.xlabel("Fare")
+plt.ylabel("Number of Passengers")
+plt.show()
