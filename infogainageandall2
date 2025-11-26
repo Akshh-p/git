@@ -1,0 +1,56 @@
+QUESTION 23 import pandas as pd
+import math
+
+# Dataset
+data = [
+["Young","High","No","Fair","No"],
+["Young","High","No","Good","No"],
+["Middle","High","No","Fair","Yes"],
+["Old","Medium","No","Fair","Yes"],
+["Old","Low","Yes","Fair","Yes"],
+["Old","Low","Yes","Good","No"],
+["Middle","Low","Yes","Good","Yes"],
+["Young","Medium","No","Fair","No"],
+["Young","Low","Yes","Fair","No"],
+["Old","Medium","Yes","Fair","Yes"],
+["Young","Medium","Yes","Good","Yes"],
+["Middle","Medium","No","Good","Yes"],
+["Middle","High","Yes","Fair","Yes"],
+["Old","Medium","No","Good","No"]
+]
+
+df = pd.DataFrame(data, columns=["Age","Income","Married","Health","Class"])
+
+# Frequency table for Age
+freq_table = pd.crosstab(df['Age'], df['Class'])
+print("Frequency Table (Age vs Class):")
+print(freq_table, "\n")
+
+# Entropy function
+def entropy(counts):
+    total = sum(counts)
+    ent = 0
+    for c in counts:
+        if c != 0:
+            p = c / total
+            ent -= p * math.log2(p)
+    return ent
+
+# Total entropy
+total_entropy = entropy(df['Class'].value_counts().tolist())
+print("Total Entropy:", total_entropy)
+
+# Entropy for each Age group
+groups = df.groupby('Age')
+
+weighted_entropy = 0
+for age, group in groups:
+    counts = group['Class'].value_counts().tolist()
+    e = entropy(counts)
+    w = len(group) / len(df)
+    weighted_entropy += w * e
+    print(f"Entropy for Age={age}: {e} (weight={w})")
+
+# Information gain
+IG = total_entropy - weighted_entropy
+print("\nInformation Gain for Age:", IG)
