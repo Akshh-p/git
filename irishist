@@ -1,0 +1,28 @@
+QUESTON 11 import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+
+# ----------------------------------------------------
+# 1. LOAD IRIS DATASET
+# ----------------------------------------------------
+iris = load_iris()
+df = pd.DataFrame(iris.data, columns=iris.feature_names)
+df["species"] = iris.target
+
+# ----------------------------------------------------
+# 2. LIST FEATURES AND TYPES
+# ----------------------------------------------------
+print("=== FEATURES AND THEIR TYPES ===")
+for col in df.columns:
+    if col == "species":
+        print(f"{col} : nominal (class label)")
+    else:
+        print(f"{col} : numeric (continuous)")
+
+# ----------------------------------------------------
+# 3. HISTOGRAMS FOR EACH FEATURE
+# ----------------------------------------------------
+df.hist(figsize=(10, 8), bins=10, edgecolor="black")
+plt.suptitle("Histograms of Iris Dataset Features", fontsize=16)
+plt.tight_layout()
+plt.show()
