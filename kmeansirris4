@@ -1,0 +1,46 @@
+QUESTION 21 import pandas as pd
+import numpy as np
+
+# Load the dataset (ensure IRIS.csv is in the same folder)
+df = pd.read_csv("C:\\Users\\hp\\Downloads\\Datasets\\Datasets\\IRIS.csv")
+
+# Extract numeric features (remove species column)
+X = df.iloc[:, 0:4].values  # sepal length, sepal width, petal length, petal width
+
+# Number of clusters
+K = 4
+
+# Randomly initialize centroids from the data points
+np.random.seed(42)  # To make results reproducible
+random_indices = np.random.choice(len(X), K, replace=False)
+centroids = X[random_indices]
+
+print("Initial Centroids:\n", centroids)
+
+# Euclidean distance function
+def euclidean_distance(a, b):
+    return np.sqrt(np.sum((a - b) ** 2))
+
+# K-means loop
+for iteration in range(10):
+    clusters = [[] for _ in range(K)]
+    
+    # Assign each point to closest centroid
+    for point in X:
+        distances = [euclidean_distance(point, centroid) for centroid in centroids]
+        cluster_index = np.argmin(distances)
+        clusters[cluster_index].append(point)
+    
+    # Update centroids by mean of assigned points
+    new_centroids = []
+    for cluster in clusters:
+        new_centroids.append(np.mean(cluster, axis=0))
+    
+    centroids = np.array(new_centroids)
+    print(f"\nIteration {iteration + 1} Centroids:")
+    print(centroids)
+
+# Final Output
+print("\nFinal Cluster Means (Centroids):")
+for i, centroid in enumerate(centroids):
+    print(f"Cluster {i+1} Mean:", centroid)
