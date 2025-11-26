@@ -1,0 +1,55 @@
+QUESTION 6 import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+from sklearn.tree import DecisionTreeClassifier
+
+# --------------------------------------------------------
+# 1. LOAD DATA
+# --------------------------------------------------------
+df = pd.read_csv("C:\\Users\\hp\\Downloads\\Datasets\\Datasets\\Lipstick.csv")
+
+# --------------------------------------------------------
+# 2. LABEL ENCODE CATEGORICAL COLUMNS
+# --------------------------------------------------------
+encoders = {}
+for col in df.columns:
+    if df[col].dtype == 'object':
+        encoders[col] = LabelEncoder()
+        df[col] = encoders[col].fit_transform(df[col])
+
+# 'Buys' is the target column
+X = df.drop("Buys", axis=1)
+y = df["Buys"]
+
+# --------------------------------------------------------
+# 3. TRAIN DECISION TREE
+# --------------------------------------------------------
+model = DecisionTreeClassifier()
+model.fit(X, y)
+
+# --------------------------------------------------------
+# 4. CREATE TEST DATA
+# --------------------------------------------------------
+test_data = {
+    "Id": [999],                 # placeholder ID
+    "Age": [">35"],
+    "Income": ["Medium"],
+    "Gender": ["Female"],
+    "Ms": ["Married"]
+}
+
+test_df = pd.DataFrame(test_data)
+
+# Encode test data using saved encoders
+for col in test_df.columns:
+    if col in encoders:
+        test_df[col] = encoders[col].transform(test_df[col])
+
+# --------------------------------------------------------
+# 5. PREDICT
+# --------------------------------------------------------
+prediction = model.predict(test_df)[0]
+result = encoders["Buys"].inverse_transform([prediction])[0]
+
+print("=== FINAL DECISION ===")
+print("Test Input:", test_data)
+print("Decision:", result)
