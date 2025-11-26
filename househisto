@@ -1,0 +1,26 @@
+QUESTION 3 import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load dataset
+df = pd.read_csv("C:\\Users\\hp\\Downloads\\Datasets\\Datasets\\House Data.csv")
+
+# Select only numeric features
+numeric_df = df.select_dtypes(include=['int64', 'float64'])
+
+# 1. STANDARD DEVIATION
+print("\n=== STANDARD DEVIATION ===")
+print(numeric_df.std())
+
+# 2. VARIANCE
+print("\n=== VARIANCE ===")
+print(numeric_df.var())
+
+# 3. PERCENTILES
+print("\n=== PERCENTILES (25th, 50th, 75th) ===")
+percentiles = numeric_df.quantile([0.25, 0.5, 0.75])
+print(percentiles)
+
+# 4. HISTOGRAMS FOR EACH FEATURE
+numeric_df.hist(figsize=(15, 12), bins=20)
+plt.tight_layout()
+plt.show()
