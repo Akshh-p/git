@@ -1,0 +1,40 @@
+QUESTON 24 import pandas as pd
+
+# Load dataset
+df = pd.read_csv("C:\\Users\\hp\\Downloads\\Datasets\\Datasets\\Diabetes.csv")
+
+# Display first few rows
+print("\nDataset Preview:\n", df.head())
+
+# 1. Count unique values of each column
+print("\nUnique Values Count:\n")
+for col in df.columns:
+    print(f"{col} : {df[col].nunique()} unique values")
+
+# 2. Display data type of each column
+print("\nData Types (Format of Each Column):\n")
+print(df.dtypes)
+
+# 3. Convert variable data type (Example: convert 'Age' from int to float)
+if "Age" in df.columns:
+    df["Age"] = df["Age"].astype("float")
+    print("\nData Type of 'Age' converted to float\n")
+
+# 4. Identifying missing values
+print("\nMissing Values Count:\n")
+print(df.isnull().sum())
+
+# 5. Filling missing values
+# Numerical columns -> fill with mean, Categorical -> fill with mode
+for col in df.columns:
+    if df[col].dtype in ['int64', 'float64']:
+        df[col].fillna(df[col].mean(), inplace=True)
+    else:
+        df[col].fillna(df[col].mode()[0], inplace=True)
+
+print("\nMissing Values After Filling:\n")
+print(df.isnull().sum())
+
+# Show summary
+print("\nUpdated Dataset Info:\n")
+print(df.info())
