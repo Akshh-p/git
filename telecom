@@ -1,0 +1,53 @@
+QEUSTION 2 import pandas as pd
+
+# Load the dataset
+df = pd.read_csv("C:\\Users\\hp\\Downloads\\Datasets\\Datasets\\Telecom Churn.csv")   # ← change filename if needed
+
+print("✔ DATASET LOADED SUCCESSFULLY\n")
+
+print("FIRST 5 ROWS:")
+print(df.head())
+
+# Minimum
+print("\n==============================")
+print("MINIMUM VALUE OF EACH COLUMN")
+print("==============================")
+print(df.min())
+
+# Maximum
+print("\n==============================")
+print("MAXIMUM VALUE OF EACH COLUMN")
+print("==============================")
+print(df.max())
+
+# Mean
+print("\n==============================")
+print("MEAN OF EACH COLUMN")
+print("==============================")
+print(df.mean(numeric_only=True))
+
+# Range
+print("\n==============================")
+print("RANGE (MAX - MIN) OF EACH COLUMN")
+print("==============================")
+range_values = df.max(numeric_only=True) - df.min(numeric_only=True)
+print(range_values)
+
+# Standard Deviation
+print("\n==============================")
+print("STANDARD DEVIATION OF EACH COLUMN")
+print("==============================")
+print(df.std(numeric_only=True))
+
+# Variance
+print("\n==============================")
+print("VARIANCE OF EACH COLUMN")
+print("==============================")
+print(df.var(numeric_only=True))
+
+# Percentiles
+print("\n==============================")
+print("PERCENTILES (25th, 50th, 75th)")
+print("==============================")
+percentiles = df.quantile([0.25, 0.5, 0.75])
+print(percentiles)
