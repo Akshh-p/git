@@ -1,0 +1,22 @@
+QUESTION 19 import pandas as pd
+
+# Load the iris dataset
+df = pd.read_csv("C:\\Users\\hp\\Downloads\\Datasets\\Datasets\IRIS.csv")   # make sure the file name matches
+
+# Display unique species names
+print("Available Species:", df['species'].unique())
+
+# Filter dataset by species
+setosa = df[df['species'] == "Iris-setosa"]
+versicolor = df[df['species'] == "Iris-versicolor"]
+virginica = df[df['species'] == "Iris-virginica"]
+
+# Display statistical details
+print("\n----- Iris-setosa Statistics -----")
+print(setosa.describe(percentiles=[.25, .5, .75]))
+
+print("\n----- Iris-versicolor Statistics -----")
+print(versicolor.describe(percentiles=[.25, .5, .75]))
+
+print("\n----- Iris-virginica Statistics -----")
+print(virginica.describe(percentiles=[.25, .5, .75]))
