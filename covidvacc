@@ -1,0 +1,20 @@
+QUESTION 13 AND 14 import pandas as pd
+
+# Load the dataset
+df = pd.read_csv("C:\\Users\\hp\\Downloads\\Datasets\\Datasets\\Covid Vaccine Statewise.csv")
+
+# Describe the dataset (structure + statistics)
+print("DATASET DESCRIPTION:\n")
+print(df.describe(include='all'))
+
+# State-wise calculations
+df_summary = df.groupby("State").agg({
+    "First Dose Administered": "sum",
+    "Second Dose Administered": "sum",
+    "Male(Individuals Vaccinated)": "sum",
+    "Female(Individuals Vaccinated)": "sum"
+}).reset_index()
+
+# Display final summary result
+print("\nSTATE-WISE VACCINATION SUMMARY:\n")
+print(df_summary)
